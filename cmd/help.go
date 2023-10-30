@@ -2,19 +2,9 @@ package cmd
 
 import "fmt"
 
-type HelpCommand struct{
-	CommandName string
-	CommandDescription string
-}
+type HelpCmd struct{}
 
-func GetCommand() *HelpCommand{
-	return &HelpCommand{
-		CommandName: "help",
-		CommandDescription: "Displays the help screen for the program",
-	}
-}
-
-func (help *HelpCommand) CommandAction() error{
-	fmt.Println("Helping")
-	return nil
+func (help *HelpCmd) ExecuteAction(cmd *Command){
+	fmt.Println(cmd.CommandName)
+	fmt.Println(cmd.CommandDesc)
 }

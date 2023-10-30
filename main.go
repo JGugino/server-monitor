@@ -7,11 +7,21 @@ import (
 )
 
 func main(){
-	commands := make(map[string]*Command, 6)
+	if len(os.Args) <= 1{
+		panic("Not enough arguments")
+	}
 
-	helpCmd := cmd.HelpCommand{CommandName: "help", CommandDescription: "Displays the help screen for the program"}
+	commandHandler := cmd.NewCommandHandler(os.Args[2:], os.Args[1:2][0])
 
-	commandHandler := NewCommandHandler(os.Args[1:], os.Args[1:2][0], commands)
+	helpCmd := &cmd.HelpCmd{}
 
-	commandHandler.HandleCommand(&helpCmd)
+	commandHandler.AddCommand(&cmd.Command{CommandName: "help", CommandDesc: "Shows a help menu for all available commands.", CommandAction: helpCmd})
+
+	currentCmd, err := commandHandler.ValidateAndReturnCommand();
+
+	if err != nil{
+		panic(err)
+	}
+
+	commandHandler.HandleCommand(currentCmd)
 }
